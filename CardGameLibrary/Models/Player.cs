@@ -27,9 +27,7 @@ namespace CardGameLibrary.Models
                 DealtHand.Remove(cardToChange);
                 DealtHand.Add(newCard);
             }
-       
         }
-
         public PlayingCard PlayCard(int cardNr)
         {
             var cardToPlay = DealtHand.FirstOrDefault(x => x.Id == cardNr);

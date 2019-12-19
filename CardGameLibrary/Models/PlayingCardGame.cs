@@ -1,5 +1,6 @@
 ﻿using CardGameLibrary;
 using CardGameLibrary.Models;
+using CardGameLibrary.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,10 @@ namespace CardGameLibrary.Models
     {
         public PlayingCardDeck CardDeck { get; set; }
         public List<Player> Players { get; set; } = new List<Player>();
-        public List<PlayingCard> playedCards = new List<PlayingCard>();
+        public List<(string,PlayingCard)> playedCards = new List<(string,PlayingCard)>();
         static Random random = new Random();
+        public HighscoreService service = new HighscoreService();
+        public bool Player1sTurn { get; set; } = true;
 
         public PlayingCardGame()
         {
@@ -49,13 +52,12 @@ namespace CardGameLibrary.Models
             }
         }
 
-        public void DisplayPlayedCards()
+      
+        public Player DecideWinner() => Player1sTurn ? Players[0] : Players[1];
+        public void UpdateHighScore()
         {
-            foreach (var item in playedCards)
-            {
-                Console.WriteLine($"{item.Rank} of {item.Symbol}");
-            }
-
+            CardGameHighScore winner = new CardGameHighScore { Name = DecideWinner().Name };
+            service.AddHighScore(winner);
         }
     }
 }

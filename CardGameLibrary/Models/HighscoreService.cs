@@ -23,7 +23,7 @@ namespace CardGameLibrary.Models
 
         public  List<CardGameHighScore> HighscoreList()
         {
-            return context1.CardGameHighScore.Select(x => x).ToList();
+            return context1.CardGameHighScore.Select(x => x).OrderByDescending(x=>x.NumberOfWins).ToList();
         }
 
         public void AddHighScore(CardGameHighScore highscore)
@@ -34,7 +34,11 @@ namespace CardGameLibrary.Models
             } 
             else
             {
+
                 context1.CardGameHighScore.Add(highscore);
+                context1.SaveChanges();
+                context1.CardGameHighScore.First(x => x.Name == highscore.Name).NumberOfWins = 1;
+
             }
             context1.SaveChanges();
         }   

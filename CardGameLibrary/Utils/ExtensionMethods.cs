@@ -21,5 +21,26 @@ namespace CardGameLibrary.Utils
                 Console.WriteLine();
             }
         }
+
+        public static void PrintPlayersCards(this Player player)
+        {
+                Console.WriteLine($"{player.Name}");
+                foreach (var card in player.DealtHand.OrderBy(x => x.Id))
+                {
+                    Console.WriteLine($"{card.Id} {card.Rank} of {card.Symbol} - {card.Suit}");
+                }
+                Console.WriteLine();
+            
+        }
+
+        public static void DisplayPlayedCards(this PlayingCardGame game)
+        {
+            Console.WriteLine($"Played cards:");
+            foreach (var item in game.playedCards)
+            {
+                Console.WriteLine($"{item.Item1} played {item.Item2.Rank} of {item.Item2.Symbol}");
+            }
+            Console.WriteLine();
+        }
     }
 }

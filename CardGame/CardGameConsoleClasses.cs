@@ -1,4 +1,5 @@
 ﻿using CardGameLibrary.Models;
+using CardGameLibrary.Models.Entities;
 using CardGameLibrary.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,65 +11,53 @@ namespace CardGame
 {
     public static class CardGameConsoleClasses
     {
-           
-        
-
-
+    
         public static void PlayGame(PlayingCardGame game)
         {
             Console.OutputEncoding = Encoding.UTF8;
             AddPlayersToGame(game);
             Console.Clear();
             game.DealCards(5);
-            game.PrintPlayersCards();
+           // game.PrintPlayersCards();
             ChangeCards(game);
             RunGame(game);
+            game.DecideWinner();
+            game.UpdateHighScore();
             Console.Clear();
-            Console.WriteLine("The End");
+            DisplayHighScore(game);
+           
             Console.ReadKey();
         }
+
+     
 
         public static void RunGame(PlayingCardGame game)
         {
             Console.Clear();
-            bool runGame = true;
-            while (runGame)
-            {
-                bool player1sTurn = true;
+                
                 for (int i = 0; i < 5; i++)
                 {
-                    game.PrintPlayersCards();
-                    Console.WriteLine();
-                    Console.WriteLine("Played cards:");
-                    game.DisplayPlayedCards();
-                    Console.WriteLine();
-                    if (player1sTurn)
+                    //game.PrintPlayersCards();
+                    //Console.WriteLine();
+                    //Console.WriteLine("Played cards:");
+                    //game.DisplayPlayedCards();
+                    //Console.WriteLine();
+                    if (game.Player1sTurn)
                     {
                         PlayCard(game, 0);
-                        Console.WriteLine();
+                       
                         PlayCard(game, 1);
                     }
-                    else if (!player1sTurn)
+                    else if (!game.Player1sTurn)
                     {
                         PlayCard(game, 1);
-                        Console.WriteLine();
+                       
                         PlayCard(game, 0);
                     }
-                    player1sTurn = DecideWhosTurn(player1sTurn, game);
+                    game.Player1sTurn = DecideWhosTurn(game.Player1sTurn, game);
                     Console.Clear();
                 }
-                if (player1sTurn)
-                {
-                    Console.WriteLine($"Congratulations {game.Players[0].Name} you won!");
-                    runGame = false;
-                }
-                else
-                {
-                    Console.WriteLine($"Congratulations {game.Players[1].Name} you won!");
-                    runGame = false;
-                }
-                Console.ReadKey();
-            }
+                PrintWinner(game);
         }
         public static void AddPlayersToGame(PlayingCardGame game)
         {
@@ -84,11 +73,11 @@ namespace CardGame
             var card1 = game.playedCards[game.playedCards.Count - 2];
             var card2 = game.playedCards[game.playedCards.Count - 1];
 
-            if (card2.Suit != card1.Suit)
+            if (card2.Item2.Suit != card1.Item2.Suit)
             {
                 return player1sTurn;
             }
-            else if ((int)card2.Rank <= (int)card1.Rank)
+            else if ((int)card2.Item2.Rank <= (int)card1.Item2.Rank)
             {
                 return player1sTurn;
             }
@@ -97,11 +86,23 @@ namespace CardGame
                 return !player1sTurn;
             }
         }
-
+        public static void PrintWinner(PlayingCardGame game)
+        {
+            if (game.Player1sTurn)
+            {
+                Console.WriteLine($"Congratulations {game.Players[0].Name} you won!");
+            }
+            else
+            {
+                Console.WriteLine($"Congratulations {game.Players[1].Name} you won!");
+            }
+            Console.ReadKey();
+        }
         public static void ChangeCards(PlayingCardGame game)
         {
             for (int i = 0; i < game.Players.Count; i++)
             {
+                game.Players[i].PrintPlayersCards();
                 List<int> idOfCardsToChange = new List<int>();
                 Console.WriteLine($"{game.Players[i].Name}: Input nr of card you like to change:");
                 int nrOfCardToChange = InputControl.ControlIntInput(0, 5);
@@ -135,18 +136,21 @@ namespace CardGame
                 }
 
                 game.Players[i].ChangeCard(idOfCardsToChange, game);
-
+                Console.Clear();
             }
         }
-
         public static bool ControlValidCard(int idOfCard, int i, PlayingCardGame game)
         {
             return game.Players[i].DealtHand.Any(x => x.Id == idOfCard);
         }
         public static void PlayCard(PlayingCardGame game, int i)
         {
-            Console.WriteLine($"It's {game.Players[i].Name}s turn. Pick a card to play:");
-
+            if (game.playedCards.Count != 0)
+            {
+                game.DisplayPlayedCards();
+            }
+            Console.WriteLine($"It's {game.Players[i].Name}s turn. Pick a card to play:\n");
+            game.Players[i].PrintPlayersCards();
             bool validIdofCard = false;
             while (!validIdofCard)
             {
@@ -154,21 +158,20 @@ namespace CardGame
 
                 if (game.Players[i].DealtHand.Any(x => x.Id == idOfcardToPlay))
                 {
-
                     var cardToPlay = game.Players[i].DealtHand.Single(x => x.Id == idOfcardToPlay);
                     if (game.playedCards.Count == 0)
                     {
-                        game.playedCards.Add(cardToPlay);
+                        game.playedCards.Add((game.Players[i].Name, cardToPlay));
                         game.Players[i].PlayCard(idOfcardToPlay);
                         validIdofCard = true;
-                        Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
+                        //Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
                     }
-                    else if (game.playedCards.Count % 2 == 0 || game.playedCards[game.playedCards.Count - 1].Suit == cardToPlay.Suit || !game.Players[i].DealtHand.Any(x => x.Suit == game.playedCards[game.playedCards.Count - 1].Suit))
+                    else if (game.playedCards.Count % 2 == 0 || game.playedCards[game.playedCards.Count - 1].Item2.Suit == cardToPlay.Suit || !game.Players[i].DealtHand.Any(x => x.Suit == game.playedCards[game.playedCards.Count - 1].Item2.Suit))
                     {
-                        game.playedCards.Add(cardToPlay);
+                        game.playedCards.Add((game.Players[i].Name,cardToPlay));
                         game.Players[i].PlayCard(idOfcardToPlay);
                         validIdofCard = true;
-                        Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
+                        //Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
                     }
                     else
                     {
@@ -179,6 +182,18 @@ namespace CardGame
                 {
                     Console.WriteLine("Input valid id from remaining card");
                 }
+            }
+            Console.Clear();
+        }
+        public static void DisplayHighScore(PlayingCardGame game)
+        {
+            var highscoreList = game.service.HighscoreList();
+            Console.WriteLine("Highscore:");
+            Console.WriteLine();
+            for (int i = 0; i < highscoreList.Count(); i++)
+            {
+
+                Console.WriteLine($"{i+1}. {highscoreList[i].Name} Wins: {highscoreList[i].NumberOfWins}");
             }
         }
     }
