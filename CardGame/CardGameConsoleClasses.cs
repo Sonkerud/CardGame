@@ -11,25 +11,52 @@ namespace CardGame
 {
     public static class CardGameConsoleClasses
     {
-    
+
+        public static void StartGame(PlayingCardGame game)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("---Cardgame 2032----");
+                Console.WriteLine("1. Play Game");
+                Console.WriteLine("2. Show Highscore");
+                Console.WriteLine("3. Show rules");
+                Console.WriteLine("4. Play Game\n");
+
+                ConsoleKeyInfo key = new ConsoleKeyInfo();
+                key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1:
+                        PlayGame(game);
+                        break;
+                    case ConsoleKey.D2:
+                        DisplayHighScore(game);
+                        Console.ReadKey();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+
+        }
         public static void PlayGame(PlayingCardGame game)
         {
             Console.OutputEncoding = Encoding.UTF8;
             AddPlayersToGame(game);
             Console.Clear();
             game.DealCards(5);
-           // game.PrintPlayersCards();
             ChangeCards(game);
             RunGame(game);
             game.DecideWinner();
             game.UpdateHighScore();
             Console.Clear();
             DisplayHighScore(game);
-           
             Console.ReadKey();
         }
 
-     
+        
 
         public static void RunGame(PlayingCardGame game)
         {
@@ -187,6 +214,7 @@ namespace CardGame
         }
         public static void DisplayHighScore(PlayingCardGame game)
         {
+            Console.Clear();
             var highscoreList = game.service.HighscoreList();
             Console.WriteLine("Highscore:");
             Console.WriteLine();
