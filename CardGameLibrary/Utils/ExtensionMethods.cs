@@ -38,7 +38,7 @@ namespace CardGameLibrary.Utils
             Console.WriteLine($"Played cards:");
             foreach (var item in game.playedCards)
             {
-                Console.WriteLine($"{item.Item1} played {item.Item2.Rank} of {item.Item2.Symbol}");
+                Console.WriteLine($"{item.Item1} played {item.Item2.Rank} of {item.Item2.Symbol} - {item.Item2.Suit}");
             }
             Console.WriteLine();
         }

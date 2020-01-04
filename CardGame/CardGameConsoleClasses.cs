@@ -64,11 +64,7 @@ namespace CardGame
                 
                 for (int i = 0; i < 5; i++)
                 {
-                    //game.PrintPlayersCards();
-                    //Console.WriteLine();
-                    //Console.WriteLine("Played cards:");
-                    //game.DisplayPlayedCards();
-                    //Console.WriteLine();
+                    
                     if (game.Player1sTurn)
                     {
                         PlayCard(game, 0);
@@ -129,9 +125,11 @@ namespace CardGame
         {
             for (int i = 0; i < game.Players.Count; i++)
             {
+                Console.WriteLine($"{game.Players[i].Name}, press enter to see your hand: ");
+                Console.ReadLine();
                 game.Players[i].PrintPlayersCards();
                 List<int> idOfCardsToChange = new List<int>();
-                Console.WriteLine($"{game.Players[i].Name}: Input nr of card you like to change:");
+                Console.WriteLine($"{game.Players[i].Name}: Input nr of cards you like to change:");
                 int nrOfCardToChange = InputControl.ControlIntInput(0, 5);
 
                 for (int y = 0; y < nrOfCardToChange; y++)
@@ -177,6 +175,8 @@ namespace CardGame
                 game.DisplayPlayedCards();
             }
             Console.WriteLine($"It's {game.Players[i].Name}s turn. Pick a card to play:\n");
+            Console.WriteLine("Press enter to see hand:\n");
+            Console.ReadKey(true);
             game.Players[i].PrintPlayersCards();
             bool validIdofCard = false;
             while (!validIdofCard)
