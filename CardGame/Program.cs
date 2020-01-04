@@ -14,7 +14,7 @@ namespace CardGame
         static void Main(string[] args)
         { 
             PlayingCardGame game = new PlayingCardGame();
-            CardGameConsoleClasses.StartGame(game);
+            CardGameConsole.StartGame(game);
         }
     }
 }

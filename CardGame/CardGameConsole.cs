@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CardGame
 {
-    public static class CardGameConsoleClasses
+    public static class CardGameConsole
     {
 
         public static void StartGame(PlayingCardGame game)
