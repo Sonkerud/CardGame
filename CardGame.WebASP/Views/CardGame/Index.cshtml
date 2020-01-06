@@ -1,0 +1,54 @@
+﻿@model CardGame.WebASP.Models.CardGameVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Spela 5-kort</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Spelare</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Game.Players)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+            </tr>
+            <tr>
+                @foreach (var card in item.DealtHand)
+                {
+                <td>
+                    <div class="card">
+
+                        <div class="card-header text-center bg-primary text-white"> @card.Rank of @card.Suit</div>
+
+                        <div class="card-body text-center" style="min-height:100px">
+                            @*<div><img src="~/img/@dog.ImgSrc" class="rounded-circle" style="height: 150px" /></div>
+                            <br />*@
+                        </div>
+
+                        @*<div class="card-footer text-center bg-white">
+                            <form action="/dogs/delete/@dog.Id" method="post">
+                                <button class="btn btn bg-danger text-white" type="submit" name="delete">Delete</button>
+                                <a class="btn bg-success" href="/dogs/edit/@dog.Id">Edit</a>
+                            </form>
+                        </div>*@
+
+                    </div>
+                </td>
+                }
+                
+            </tr>
+        }
+    </tbody>
+</table>

@@ -11,7 +11,6 @@ namespace CardGame
 {
     public static class CardGameConsole
     {
-
         public static void StartGame(PlayingCardGame game)
         {
             while (true)
@@ -34,12 +33,14 @@ namespace CardGame
                         DisplayHighScore(game);
                         Console.ReadKey();
                         break;
+                    case ConsoleKey.D3:
+                        DisplayRules();
+                        Console.ReadLine();
+                        break;
                     default:
                         break;
                 }
             }
-            
-
         }
         public static void PlayGame(PlayingCardGame game)
         {
@@ -55,9 +56,6 @@ namespace CardGame
             DisplayHighScore(game);
             Console.ReadKey();
         }
-
-        
-
         public static void RunGame(PlayingCardGame game)
         {
             Console.Clear();
@@ -77,7 +75,8 @@ namespace CardGame
                        
                         PlayCard(game, 0);
                     }
-                    game.Player1sTurn = DecideWhosTurn(game.Player1sTurn, game);
+                    game.DecideWhosTurn();
+                    
                     Console.Clear();
                 }
                 PrintWinner(game);
@@ -89,24 +88,6 @@ namespace CardGame
                 Console.WriteLine($"Input player {i + 1} name:");
                 string playerName = Console.ReadLine();
                 game.AddPlayers(playerName);
-            }
-        }
-        public static bool DecideWhosTurn(bool player1sTurn, PlayingCardGame game)
-        {
-            var card1 = game.playedCards[game.playedCards.Count - 2];
-            var card2 = game.playedCards[game.playedCards.Count - 1];
-
-            if (card2.Item2.Suit != card1.Item2.Suit)
-            {
-                return player1sTurn;
-            }
-            else if ((int)card2.Item2.Rank <= (int)card1.Item2.Rank)
-            {
-                return player1sTurn;
-            }
-            else
-            {
-                return !player1sTurn;
             }
         }
         public static void PrintWinner(PlayingCardGame game)
@@ -191,14 +172,14 @@ namespace CardGame
                         game.playedCards.Add((game.Players[i].Name, cardToPlay));
                         game.Players[i].PlayCard(idOfcardToPlay);
                         validIdofCard = true;
-                        //Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
+                       
                     }
                     else if (game.playedCards.Count % 2 == 0 || game.playedCards[game.playedCards.Count - 1].Item2.Suit == cardToPlay.Suit || !game.Players[i].DealtHand.Any(x => x.Suit == game.playedCards[game.playedCards.Count - 1].Item2.Suit))
                     {
                         game.playedCards.Add((game.Players[i].Name,cardToPlay));
                         game.Players[i].PlayCard(idOfcardToPlay);
                         validIdofCard = true;
-                        //Console.WriteLine($"{game.Players[i].Name} played {cardToPlay.Rank} of {cardToPlay.Symbol}");
+                        
                     }
                     else
                     {
@@ -223,6 +204,17 @@ namespace CardGame
 
                 Console.WriteLine($"{i+1}. {highscoreList[i].Name} Wins: {highscoreList[i].NumberOfWins}");
             }
+        }
+        public static void DisplayRules()
+        {
+            Console.Clear();
+            Console.WriteLine("Rules:");
+            Console.WriteLine("- Cardgame for 2 players");
+            Console.WriteLine("- Both players starts with five cards.");
+            Console.WriteLine("- Both players get one opportunity to change as many cards as they like.");
+            Console.WriteLine("- You have to follow suit. Highest rank in correct suit continue to play.");
+            Console.WriteLine("- Winner of last round wins the game.");
+
         }
     }
 }

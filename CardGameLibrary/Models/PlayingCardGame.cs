@@ -59,5 +59,27 @@ namespace CardGameLibrary.Models
             CardGameHighScore winner = new CardGameHighScore { Name = DecideWinner().Name };
             service.AddHighScore(winner);
         }
+
+        public bool DecideWhosTurn()
+        {
+            var card1 = playedCards[playedCards.Count - 2];
+            var card2 = playedCards[playedCards.Count - 1];
+
+            if (card2.Item2.Suit != card1.Item2.Suit)
+            {
+                Player1sTurn = Player1sTurn;
+            }
+            else if ((int)card2.Item2.Rank <= (int)card1.Item2.Rank)
+            {
+                Player1sTurn = Player1sTurn;
+
+            }
+            else
+            {
+                Player1sTurn = !Player1sTurn;
+
+            }
+            return Player1sTurn;
+        }
     }
 }

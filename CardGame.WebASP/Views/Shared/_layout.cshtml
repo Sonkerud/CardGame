@@ -1,0 +1,46 @@
+﻿
+
+@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Spela 5-kort
+    </title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-toggleable-sm bg-danger navbar-dark border-bottom box-shadow mb-3 sticky-top">
+        <div class="container font-weight-bold bg-danger ">
+            <a class="navbar-brand" href="~/"><div class="">Start</div></a>
+          
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        @RenderBody()
+
+        <hr />
+        <footer>
+
+            <p>&copy; 2019 - SpelaFemKort.nu</p>
+
+        </footer>
+    </div>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
