@@ -51,15 +51,12 @@ namespace CardGameLibrary.Models
                 }
             }
         }
-
-      
         public Player DecideWinner() => Player1sTurn ? Players[0] : Players[1];
         public void UpdateHighScore()
         {
             CardGameHighScore winner = new CardGameHighScore { Name = DecideWinner().Name };
             service.AddHighScore(winner);
         }
-
         public bool DecideWhosTurn()
         {
             var card1 = playedCards[playedCards.Count - 2];
@@ -72,12 +69,10 @@ namespace CardGameLibrary.Models
             else if ((int)card2.Item2.Rank <= (int)card1.Item2.Rank)
             {
                 Player1sTurn = Player1sTurn;
-
             }
             else
             {
                 Player1sTurn = !Player1sTurn;
-
             }
             return Player1sTurn;
         }

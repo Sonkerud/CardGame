@@ -48,6 +48,9 @@ namespace CardGame
             AddPlayersToGame(game);
             Console.Clear();
             game.DealCards(5);
+            game.Players[0].StrengthOfHandCalculator();
+            game.Players[1].StrengthOfHandCalculator();
+
             ChangeCards(game);
             RunGame(game);
             game.DecideWinner();

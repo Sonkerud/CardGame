@@ -1,6 +1,8 @@
 using CardGameLibrary.Models;
 using System;
+using System.Collections.Generic;
 using Xunit;
+
 
 namespace CardGame.Test
 {
@@ -35,6 +37,45 @@ namespace CardGame.Test
             //Assert
             Assert.NotEqual(deck, expectedDeck); 
 
+        }
+        [Fact]
+        public void IsHandARoyalFlushTest()
+        {
+            var game = new PlayingCardGame();
+            game.AddPlayers("Henrik");
+            game.Players[0].DealtHand = new List<PlayingCard>{ 
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Ten},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Jack},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Queen},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.King},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Ace},
+            };
+
+            //Act
+            var hand = game.Players[0].IsHandARoyalFlush();
+
+            //Assert
+            Assert.True(hand);
+        }
+
+        [Fact]
+        public void IsHandAStraightFlushTest()
+        {
+            var game = new PlayingCardGame();
+            game.AddPlayers("Henrik");
+            game.Players[0].DealtHand = new List<PlayingCard>{
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Ten},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Jack},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Queen},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.King},
+            new PlayingCard {Suit = CardGameLibrary.Enums.Suits.Hearts, Rank = CardGameLibrary.Enums.Rank.Nine},
+            };
+
+            //Act
+            var hand = game.Players[0].IsHandAStraightFlush();
+
+            //Assert
+            Assert.True(hand);
         }
     }
 }
